@@ -1,0 +1,17 @@
+title: Example Quiz
+sub_title: By Jill
+
+rounds:
+  - title: Round 1
+    questions:
+      - question: What is the airspeed of an unladen swallow
+        answer: >
+          Roughly 25 miles per hour.
+
+          Give or take.
+        sources:
+          - https://knowyourmeme.com/memes/what-is-the-airspeed-velocity-of-an-unladen-swallow
+      - question: What is your favourite colour?
+        choices:
+          - answer: Blue
+          - No, yellow
