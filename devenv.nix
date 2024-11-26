@@ -4,7 +4,7 @@ let
   pkgs-unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.system; };
 in
 {
-  packages = [ pkgs.git ];
+  packages = [ pkgs.git pkgs.just ];
 
   languages.python = {
     enable = true;

@@ -9,8 +9,10 @@
 </style>
 {% endblock %}
 {% block content %}
-<h1>Index</h1>
-<p class="important">
-  Welcome to my awesome homepage.
-</p>
+<h1>{{quiz.title}}</h1>
+<ol>
+  {% for round in quiz.rounds %}
+  <li><a href="/rounds/{{loop.index}}">{{round.title}}</a> (<a href="/rounds/{{loop.index}}?print-pdf">print</a>)</li>
+  {% endfor %}
+</ol>
 {% endblock %}

@@ -24,8 +24,9 @@ def parse(input: Path):
 
 
 @app.command()
-def serve(host: str = "127.0.0.1", port: int = 5000):
-    asyncio.run(server.start(host=host, port=port))
+def serve(input: Path, host: str = "127.0.0.1", port: int = 5000):
+    quiz = parse_file(input)
+    asyncio.run(server.start(host=host, port=port, quiz=quiz))
 
 
 if __name__ == "__main__":
