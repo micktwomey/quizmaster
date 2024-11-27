@@ -1,12 +1,12 @@
 import asyncio
+import asyncio.exceptions
 from pathlib import Path
 
 import rich
 import typer
 import yaml
 
-from quizmaster import questions
-from quizmaster import server
+from quizmaster import questions, server
 
 app = typer.Typer()
 

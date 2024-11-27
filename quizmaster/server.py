@@ -1,5 +1,4 @@
 import importlib.resources
-from pathlib import Path
 
 import uvicorn
 from starlette.applications import Starlette
@@ -31,15 +30,15 @@ async def quiz_round(request):
 
 
 routes = [
-    Route("/", endpoint=index),
-    Route("/rounds/{round:int}", endpoint=quiz_round),
+    Route("/", endpoint=index, name="index"),
+    Route("/rounds/{round:int}", endpoint=quiz_round, name="round"),
     Mount("/static", StaticFiles(packages=["quizmaster"]), name="static"),
+    Mount("/images", StaticFiles(directory="images"), name="images"),
 ]
-
-app = Starlette(debug=True, routes=routes)
 
 
 async def start(quiz: Quiz, host: str, port: int):
+    app = Starlette(debug=True, routes=routes)
     app.state.quiz = quiz
     config = uvicorn.Config(
         app=app,

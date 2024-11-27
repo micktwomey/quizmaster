@@ -1,46 +1,23 @@
-{% extends "base.html" %}
-{% block title %}Quizmaster{% endblock %}
+{% extends "quiz_base.html" %}
+{% block title %}{{round.title}}{% endblock %}
 
-{% block content %}
-<div class="reveal">
-  <div class="slides">
-    <section>
-      {{ round.title }}
-    </section>
-    {% for question in round.questions %}
-    <section>
-      {{ question.question }}
-    </section>
-    {% endfor %}
-  </div>
-</div>
-{% endblock %}
+{% block slides %}
+<section>
+  {{ round.title }}
+</section>
+{% for question in round.questions %}
+<section>
+  <p>Question {{loop.index}}</p>
+  <h1>{{ question.question.question }}</h1>
 
+  {% if question.question.image %}
+  <img class="r-stretch" data-src="/images/{{question.question.image}}">
+  {% endif %}
+</section>
+{% endfor %}
 
-{% block script %}
-{{ super() }}
-<script>
-  // More info about initialization & config:
-  // - https://revealjs.com/initialization/
-  // - https://revealjs.com/config/
-  Reveal.initialize({
-    hash: true,
-    // The "normal" size of the presentation, aspect ratio will
-    // be preserved when the presentation is scaled to fit different
-    // resolutions. Can be specified using percentage units.
-    width: 960,
-    height: 700,
-
-    // Factor of the display size that should remain empty around
-    // the content
-    margin: 0.02,
-
-    // Bounds for smallest/largest possible scale to apply to content
-    minScale: 0.2,
-    maxScale: 2.0,
-
-    // Learn about plugins: https://revealjs.com/plugins/
-    plugins: [RevealMarkdown, RevealHighlight]
-  });
-</script>
+<section>
+  <h2>Round Finished!</h2>
+  <p><a href="/">(Back to questions)</a></p>
+</section>
 {% endblock %}

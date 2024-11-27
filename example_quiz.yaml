@@ -15,3 +15,7 @@ rounds:
         choices:
           - answer: Blue
           - No, yellow
+      - question:
+          question: Who is this?
+          image: RonSwanson.jpg
+        answer: Ron Swanson
