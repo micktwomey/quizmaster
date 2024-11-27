@@ -14,4 +14,10 @@ in
     venv.enable = true;
   };
 
+  # uv.sync.enable doesn't seem to leave you with a sync'd virtualenv. Manually
+  # sync until figured out.
+  enterShell = ''
+    uv sync
+  '';
+
 }
