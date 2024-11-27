@@ -1,0 +1,128 @@
+"""Reads quizes from files"""
+
+from pathlib import Path
+from typing import Optional
+
+import yaml
+from pydantic import BaseModel, HttpUrl
+from . import quiz as quiz_dataclasses
+
+
+class Source(BaseModel):
+    url: HttpUrl
+    title: Optional[str] = None
+    description: Optional[str] = None
+
+    def to_dataclass(self) -> quiz_dataclasses.Source:
+        return quiz_dataclasses.Source(
+            description=self.description, url=str(self.url), title=self.title
+        )
+
+
+class Answer(BaseModel):
+    answer: str
+    image: Optional[str] = None
+
+    def to_dataclass(self) -> quiz_dataclasses.Answer:
+        return quiz_dataclasses.Answer(
+            answer=self.answer,
+            image=quiz_dataclasses.Image(url=self.image)
+            if self.image is not None
+            else None,
+        )
+
+
+class Question(BaseModel):
+    question: str
+    image: Optional[str] = None
+
+    def to_dataclass(self) -> quiz_dataclasses.Question:
+        return quiz_dataclasses.Question(
+            question=self.question,
+            image=quiz_dataclasses.Image(url=self.image)
+            if self.image is not None
+            else None,
+        )
+
+
+class SingleChoiceQuestion(BaseModel):
+    question: str | Question
+    answer: str | Answer
+    sources: Optional[list[str | Source]] = None
+
+    def to_dataclass(self) -> quiz_dataclasses.SingleChoiceQuestion:
+        sources: list[str | Source] = [] if self.sources is None else self.sources
+        return quiz_dataclasses.SingleChoiceQuestion(
+            answer=quiz_dataclasses.Answer(answer=self.answer)
+            if isinstance(self.answer, str)
+            else self.answer.to_dataclass(),
+            question=quiz_dataclasses.Question(question=self.question)
+            if isinstance(self.question, str)
+            else self.question.to_dataclass(),
+            sources=[
+                quiz_dataclasses.Source(url=s)
+                if isinstance(s, str)
+                else s.to_dataclass()
+                for s in sources
+            ],
+        )
+
+
+class MultipleChoiceQuestion(BaseModel):
+    question: str | Question
+    choices: list[str | Answer]
+    sources: Optional[list[str | Source]] = None
+
+    def to_dataclass(self) -> quiz_dataclasses.MultipleChoiceQuestion:
+        sources: list[str | Source] = [] if self.sources is None else self.sources
+        return quiz_dataclasses.MultipleChoiceQuestion(
+            question=quiz_dataclasses.Question(question=self.question)
+            if isinstance(self.question, str)
+            else self.question.to_dataclass(),
+            sources=[
+                quiz_dataclasses.Source(url=s)
+                if isinstance(s, str)
+                else s.to_dataclass()
+                for s in sources
+            ],
+            choices=[
+                quiz_dataclasses.Answer(answer=a)
+                if isinstance(a, str)
+                else a.to_dataclass()
+                for a in self.choices
+            ],
+        )
+
+
+class Round(BaseModel):
+    title: str
+    sub_title: Optional[str] = None
+    questions: list[MultipleChoiceQuestion | SingleChoiceQuestion]
+
+    def to_dataclass(self) -> quiz_dataclasses.Round:
+        return quiz_dataclasses.Round(
+            title=self.title,
+            sub_title=self.sub_title,
+            questions=[q.to_dataclass() for q in self.questions],
+        )
+
+
+class Quiz(BaseModel):
+    title: str
+    sub_title: Optional[str] = None
+    rounds: list[Round]
+
+    def to_dataclass(self) -> quiz_dataclasses.Quiz:
+        return quiz_dataclasses.Quiz(
+            title=self.title,
+            sub_title=self.sub_title,
+            rounds=[r.to_dataclass() for r in self.rounds],
+        )
+
+
+def parse_file(filename: Path) -> quiz_dataclasses.Quiz:
+    with filename.open("r") as fp:
+        raw = yaml.safe_load(fp)
+    quiz = Quiz.model_validate(raw)
+
+    return quiz.to_dataclass()

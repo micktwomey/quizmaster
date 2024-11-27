@@ -1,16 +1,18 @@
+project := "quizmaster"
 slides := "example_quiz.yaml"
 
-develop: uv-sync
+develop:
   watchfiles "quizmaster serve {{slides}}" .
 
-serve: uv-sync
+serve:
   quizmaster serve {{slides}}
 
-lint: uv-sync
+lint:
   ruff check
   ruff format --check
+  mypy --strict {{project}}
 
-fix: uv-sync
+fix:
   ruff check --fix
   ruff format
 

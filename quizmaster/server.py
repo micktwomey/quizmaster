@@ -2,23 +2,25 @@ import importlib.resources
 
 import uvicorn
 from starlette.applications import Starlette
+from starlette.requests import Request
+from starlette.responses import Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-from quizmaster.questions import Quiz
+from quizmaster.quiz import Quiz
 
 with importlib.resources.path("quizmaster", "templates") as templates_path:
     templates = Jinja2Templates(directory=templates_path)
 
 
-async def index(request):
+async def index(request: Request) -> Response:
     return templates.TemplateResponse(
         request, "index.html", context={"quiz": request.app.state.quiz}
     )
 
 
-async def quiz_round(request):
+async def quiz_round(request: Request) -> Response:
     round_number = request.path_params["round"]
     quiz = request.app.state.quiz
     quiz_round = quiz.rounds[round_number - 1]
@@ -29,7 +31,7 @@ async def quiz_round(request):
     )
 
 
-routes = [
+routes: list[Route | Mount] = [
     Route("/", endpoint=index, name="index"),
     Route("/rounds/{round:int}", endpoint=quiz_round, name="round"),
     Mount("/static", StaticFiles(packages=["quizmaster"]), name="static"),
@@ -37,7 +39,7 @@ routes = [
 ]
 
 
-async def start(quiz: Quiz, host: str, port: int):
+async def start(quiz: Quiz, host: str, port: int) -> None:
     app = Starlette(debug=True, routes=routes)
     app.state.quiz = quiz
     config = uvicorn.Config(

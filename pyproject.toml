@@ -20,6 +20,7 @@ dev = [
     "mypy>=1.13.0",
     "pre-commit>=4.0.1",
     "ruff>=0.8.0",
+    "types-pyyaml>=6.0.12.20240917",
 ]
 
 [project.scripts]
@@ -28,3 +29,7 @@ quizmaster = "quizmaster.main:app"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+strict = true
