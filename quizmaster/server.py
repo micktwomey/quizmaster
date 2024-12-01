@@ -39,7 +39,8 @@ routes: list[Route | Mount] = [
 ]
 
 
-async def start(quiz: Quiz, host: str, port: int) -> None:
+
+def create_server(quiz: Quiz, host: str, port: int) -> uvicorn.Server:
     app = Starlette(debug=True, routes=routes)
     app.state.quiz = quiz
     config = uvicorn.Config(
@@ -48,5 +49,4 @@ async def start(quiz: Quiz, host: str, port: int) -> None:
         port=port,
         log_level="info",
     )
-    server = uvicorn.Server(config)
-    await server.serve()
+    return uvicorn.Server(config)
