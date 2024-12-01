@@ -31,13 +31,26 @@ async def quiz_round(request: Request) -> Response:
     )
 
 
+async def quiz_round_answers(request: Request) -> Response:
+    round_number = request.path_params["round"]
+    quiz = request.app.state.quiz
+    quiz_round = quiz.rounds[round_number - 1]
+    return templates.TemplateResponse(
+        request,
+        "quiz_answers.html",
+        context={"quiz": quiz, "round": quiz_round},
+    )
+
+
 routes: list[Route | Mount] = [
     Route("/", endpoint=index, name="index"),
+    Route(
+        "/rounds/{round:int}/answers", endpoint=quiz_round_answers, name="round_answers"
+    ),
     Route("/rounds/{round:int}", endpoint=quiz_round, name="round"),
     Mount("/static", StaticFiles(packages=["quizmaster"]), name="static"),
     Mount("/images", StaticFiles(directory="images"), name="images"),
 ]
-
 
 
 def create_server(quiz: Quiz, host: str, port: int) -> uvicorn.Server:

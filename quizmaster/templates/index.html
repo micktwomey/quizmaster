@@ -1,18 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Quizmaster{% endblock %}
-{% block head %}
-{{ super() }}
-<style type="text/css">
-  .important {
-    color: #336699;
-  }
-</style>
-{% endblock %}
 {% block content %}
-<h1>{{quiz.title}}</h1>
-<ol>
+<div class="reveal">
+  <h1>{{quiz.title}}</h1>
   {% for round in quiz.rounds %}
-  <li><a href="/rounds/{{loop.index}}">{{round.title}}</a> (<a href="/rounds/{{loop.index}}?print-pdf">print</a>)</li>
+  <h2><a href="/rounds/{{loop.index}}">{{round.title}}</a></h2>
+  <ul>
+    <li><a href="/rounds/{{loop.index}}">questions</a> (<a href="/rounds/{{loop.index}}?print-pdf">print</a>)</li>
+    <li><a href="/rounds/{{loop.index}}/answers">answers</a> (<a
+        href="/rounds/{{loop.index}}/answers?print-pdf">print</a>)</li>
+  </ul>
   {% endfor %}
-</ol>
+</div>
 {% endblock %}

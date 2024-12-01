@@ -2,6 +2,7 @@
 
 from pathlib import Path
 from typing import Optional
+import string
 
 import yaml
 from pydantic import BaseModel, HttpUrl
@@ -48,10 +49,18 @@ class Question(BaseModel):
 class SingleChoiceQuestion(BaseModel):
     question: str | Question
     answer: str | Answer
+    source: Optional[str | Source] = None
     sources: Optional[list[str | Source]] = None
+    tag: Optional[str] = None
+    tags: Optional[list[str]] = None
 
     def to_dataclass(self) -> quiz_dataclasses.SingleChoiceQuestion:
         sources: list[str | Source] = [] if self.sources is None else self.sources
+        if self.source:
+            sources.append(self.source)
+        tags = self.tags if self.tags is not None else []
+        if self.tag:
+            tags.append(self.tag)
         return quiz_dataclasses.SingleChoiceQuestion(
             answer=quiz_dataclasses.Answer(answer=self.answer)
             if isinstance(self.answer, str)
@@ -65,16 +74,33 @@ class SingleChoiceQuestion(BaseModel):
                 else s.to_dataclass()
                 for s in sources
             ],
+            tags=tags,
         )
 
 
 class MultipleChoiceQuestion(BaseModel):
     question: str | Question
     choices: list[str | Answer]
+    source: Optional[str | Source] = None
     sources: Optional[list[str | Source]] = None
+    tag: Optional[str] = None
+    tags: Optional[list[str]] = None
 
     def to_dataclass(self) -> quiz_dataclasses.MultipleChoiceQuestion:
         sources: list[str | Source] = [] if self.sources is None else self.sources
+        if self.source:
+            sources.append(self.source)
+        tags = self.tags if self.tags is not None else []
+        if self.tag:
+            tags.append(self.tag)
+        answers = [
+            (i, a) for (i, a) in enumerate(self.choices) if isinstance(a, Answer)
+        ]
+        assert len(answers) == 1
+        i, answer = answers[0]
+        letter = string.ascii_lowercase[i]
+        answer = answer.to_dataclass()
+        answer.answer = f"{letter}. {answer.answer}"
         return quiz_dataclasses.MultipleChoiceQuestion(
             question=quiz_dataclasses.Question(question=self.question)
             if isinstance(self.question, str)
@@ -86,11 +112,11 @@ class MultipleChoiceQuestion(BaseModel):
                 for s in sources
             ],
             choices=[
-                quiz_dataclasses.Answer(answer=a)
-                if isinstance(a, str)
-                else a.to_dataclass()
+                quiz_dataclasses.Choice(choice=a if isinstance(a, str) else a.answer)
                 for a in self.choices
             ],
+            answer=answer,
+            tags=tags,
         )
 
 

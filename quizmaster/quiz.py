@@ -22,6 +22,12 @@ class Answer:
 
 
 @dataclass
+class Choice:
+    choice: str
+    image: Image | None = None
+
+
+@dataclass
 class Question:
     question: str
     image: Image | None = None
@@ -33,14 +39,17 @@ class SingleChoiceQuestion:
     question: Question
     answer: Answer
     sources: list[Source]
+    tags: list[str]
 
 
 @dataclass
 class MultipleChoiceQuestion:
     type = "multiple_choice"
     question: Question
-    choices: list[Answer]
+    answer: Answer
+    choices: list[Choice]
     sources: list[Source]
+    tags: list[str]
 
 
 @dataclass

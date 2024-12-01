@@ -9,13 +9,17 @@ rounds:
           Roughly 25 miles per hour.
 
           Give or take.
-        sources:
-          - https://knowyourmeme.com/memes/what-is-the-airspeed-velocity-of-an-unladen-swallow
+        source: https://knowyourmeme.com/memes/what-is-the-airspeed-velocity-of-an-unladen-swallow
+        tag: speed
       - question: What is your favourite colour?
         choices:
           - answer: Blue
           - No, yellow
+        tags:
+          - colour
       - question:
           question: Who is this?
           image: RonSwanson.jpg
         answer: Ron Swanson
+        tags:
+          - comedy

@@ -1,11 +1,16 @@
 project := "quizmaster"
-slides := "example_quiz.yaml"
+quiz := "example_quiz.yaml"
 
-develop:
-  watchfiles "quizmaster serve {{slides}}" .
+default: serve
 
-serve:
-  quizmaster serve {{slides}}
+summary quiz=quiz:
+  quizmaster summary {{quiz}}
+
+develop quiz=quiz:
+  watchfiles "quizmaster serve {{quiz}}" .
+
+serve quiz=quiz:
+  quizmaster serve {{quiz}}
 
 lint:
   ruff check
