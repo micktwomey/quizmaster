@@ -44,12 +44,15 @@ def print_summary(totals: collections.Counter) -> None:
     rich.print(
         f"  ratio single to multiple: {totals['single_choice'] / max(totals['multiple_choice'], 1)}"
     )
-    tags = [tag.split(":", 1)[1] for tag in totals if tag.startswith("tag:")]
-    tags.sort()
+    tags = [
+        (tag.split(":", 1)[1], count)
+        for (tag, count) in totals.most_common()
+        if tag.startswith("tag:")
+    ]
 
-    rich.print(f"Tags: {len(tags)}")
-    for tag in tags:
-        rich.print(f"  {tag}: {totals['tag:' + tag]}")
+    rich.print("Tags:")
+    for tag, count in tags:
+        rich.print(f"  {tag}: {count}")
 
 
 @app.command()
