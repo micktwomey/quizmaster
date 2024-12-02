@@ -39,6 +39,7 @@ def serve(input: Path, host: str = "127.0.0.1", port: int = 5000) -> None:
 
 def print_summary(totals: collections.Counter) -> None:
     rich.print(f"Questions: {totals['questions']}")
+    rich.print(f"  Images: {totals['images']}")
     rich.print(f"  Multiple choice: {totals['multiple_choice']}")
     rich.print(f"  Single choice: {totals['single_choice']}")
     rich.print(
@@ -70,6 +71,9 @@ def summary(input: Path) -> None:
         for question in round.questions:
             round_totals["questions"] += 1
             round_totals[question.type] += 1
+            round_totals["images"] += (
+                1 if (question.question.image or question.answer.image) else 0
+            )
             for tag in question.tags:
                 round_totals[f"tag:{tag}"] += 1
 

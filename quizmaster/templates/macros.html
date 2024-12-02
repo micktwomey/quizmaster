@@ -1,15 +1,27 @@
 {% macro ask_question(question) %}
-<h2>{{ question.question.question }}</h2>
-
-{% if question.type == "multiple_choice" %}
-<ol class="questions">
-  {% for choice in question.choices %}
-  <li>{{choice.choice}}</li>
-  {% endfor %}
-</ol>
-{% endif %}
 
 {% if question.question.image %}
-<img class="r-stretch" data-src="/images/{{question.question.image.url}}">
+<div class="columns">
+
+  <div class="col">
+    {% endif %}
+    <h3>{{ question.question.question }}</h3>
+
+    {% if question.type == "multiple_choice" %}
+    <ol class="questions">
+      {% for choice in question.choices %}
+      <li>{{choice.choice}}</li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+
+    {% if question.question.image %}
+  </div>
+
+  <div class="col">
+    <img data-src="/images/{{question.question.image.url}}">
+  </div>
+
+</div>
 {% endif %}
 {% endmacro %}

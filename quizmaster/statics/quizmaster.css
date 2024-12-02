@@ -9,3 +9,12 @@ ol.answers {
 ol.questions {
   list-style-type: lower-alpha;
 }
+
+
+.columns {
+  display: flex;
+}
+
+.col {
+  flex: 1;
+}
