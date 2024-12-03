@@ -56,7 +56,7 @@ routes: list[Route | Mount] = [
     ),
     Route("/rounds/{round:int}", endpoint=quiz_round, name="round"),
     Mount("/static", StaticFiles(packages=["tablequiz"]), name="static"),
-    Mount("/images", StaticFiles(directory="images"), name="images"),
+    Mount("/images", StaticFiles(directory="images", check_dir=False), name="images"),
 ]
 
 

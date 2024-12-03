@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Tweaking builds and releases
+- Made the images folder optional, now tablequiz wont crash if youre missing an images folder.
 
 ## [0.1.1] - 2024-12-03
 ### Fixed
