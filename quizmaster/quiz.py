@@ -40,6 +40,8 @@ class SingleChoiceQuestion:
     answer: Answer
     sources: list[Source]
     tags: list[str]
+    notes: str | None = None
+    hint: str | None = None
 
 
 @dataclass
@@ -50,6 +52,8 @@ class MultipleChoiceQuestion:
     choices: list[Choice]
     sources: list[Source]
     tags: list[str]
+    notes: str | None = None
+    hint: str | None = None
 
 
 @dataclass
@@ -64,3 +68,4 @@ class Quiz:
     title: str
     rounds: list[Round]
     sub_title: str | None = None
+    slideshow: str | None = None

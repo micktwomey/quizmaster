@@ -53,6 +53,8 @@ class SingleChoiceQuestion(BaseModel):
     sources: Optional[list[str | Source]] = None
     tag: Optional[str] = None
     tags: Optional[list[str]] = None
+    notes: str | None = None
+    hint: str | None = None
 
     def to_dataclass(self) -> quiz_dataclasses.SingleChoiceQuestion:
         sources: list[str | Source] = [] if self.sources is None else self.sources
@@ -75,6 +77,8 @@ class SingleChoiceQuestion(BaseModel):
                 for s in sources
             ],
             tags=tags,
+            notes=self.notes,
+            hint=self.hint,
         )
 
 
@@ -85,6 +89,8 @@ class MultipleChoiceQuestion(BaseModel):
     sources: Optional[list[str | Source]] = None
     tag: Optional[str] = None
     tags: Optional[list[str]] = None
+    notes: str | None = None
+    hint: str | None = None
 
     def to_dataclass(self) -> quiz_dataclasses.MultipleChoiceQuestion:
         sources: list[str | Source] = [] if self.sources is None else self.sources
@@ -117,6 +123,8 @@ class MultipleChoiceQuestion(BaseModel):
             ],
             answer=answer,
             tags=tags,
+            notes=self.notes,
+            hint=self.hint,
         )
 
 
@@ -137,12 +145,14 @@ class Quiz(BaseModel):
     title: str
     sub_title: Optional[str] = None
     rounds: list[Round]
+    slideshow: Optional[str] = None
 
     def to_dataclass(self) -> quiz_dataclasses.Quiz:
         return quiz_dataclasses.Quiz(
             title=self.title,
             sub_title=self.sub_title,
             rounds=[r.to_dataclass() for r in self.rounds],
+            slideshow=self.slideshow,
         )
 
 

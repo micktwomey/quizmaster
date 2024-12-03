@@ -76,6 +76,8 @@ def summary(input: Path) -> None:
             )
             for tag in question.tags:
                 round_totals[f"tag:{tag}"] += 1
+            if not question.tags:
+                round_totals["tag:no-tag"] += 1
 
         print_summary(round_totals)
         totals.update(round_totals)

@@ -12,10 +12,28 @@
   {{macros.ask_question(question)}}
 </section>
 <section>
-  <h2>{{question.answer.answer}}</h2>
+  {% if question.notes %}
+  <section>
+    {% endif %}
+    <h2>{{question.answer.answer}}</h2>
 
-  {% if question.answer.image %}
-  <img class="r-stretch" data-src="/images/{{question.answer.image.url}}">
+    {% if question.answer.image %}
+    <img class="r-stretch" data-src="/images/{{question.answer.image.url}}">
+    {% endif %}
+
+    <ul>
+      {% for source in question.sources %}
+      <li><a href="{{source.url}}">{{source.title if source.title else source.url}}</a></li>
+      {% endfor %}
+    </ul>
+
+    {% if question.notes %}
+  </section>
+  <section data-markdown>
+    <textarea data-template>
+      {{ question.notes }}
+    </textarea>
+  </section>
   {% endif %}
 </section>
 {% endfor %}

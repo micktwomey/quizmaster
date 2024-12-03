@@ -20,6 +20,12 @@ async def index(request: Request) -> Response:
     )
 
 
+async def slideshow(request: Request) -> Response:
+    return templates.TemplateResponse(
+        request, "slideshow.html", context={"quiz": request.app.state.quiz}
+    )
+
+
 async def quiz_round(request: Request) -> Response:
     round_number = request.path_params["round"]
     quiz = request.app.state.quiz
@@ -44,6 +50,7 @@ async def quiz_round_answers(request: Request) -> Response:
 
 routes: list[Route | Mount] = [
     Route("/", endpoint=index, name="index"),
+    Route("/slideshow", endpoint=slideshow, name="slideshow"),
     Route(
         "/rounds/{round:int}/answers", endpoint=quiz_round_answers, name="round_answers"
     ),
