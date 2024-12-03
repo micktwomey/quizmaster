@@ -42,6 +42,7 @@ prepare-release:
     set -xeuo pipefail
     changelog-manager release
     hatch version $(changelog-manager current)
+    uv lock
     hatch clean
     hatch build
 
@@ -55,7 +56,7 @@ do-release:
         echo "Mismatch between changelog version ${VERSION} and hatch version ${VERSION}"
         exit 1
     fi
-    git add pyproject.toml CHANGELOG.md {{project}}/__init__.py
+    git add CHANGELOG.md {{project}}/__init__.py uv.lock
     mkdir -p build
     changelog-manager display --version $VERSION > build/release-notes.md
     if [ ! -f dist/{{project}}-${VERSION}.tar.gz ]; then
