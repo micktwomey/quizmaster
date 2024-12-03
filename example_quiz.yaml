@@ -1,6 +1,14 @@
 title: Example Quiz
 sub_title: By Jill
 
+slideshow: >
+  <section>
+    <h1>This is a quiz</h1>
+  </section>
+  <section>
+    <h1>Win big prizes!</h1>
+  </section>
+
 rounds:
   - title: Round 1
     questions:
