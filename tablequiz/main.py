@@ -7,7 +7,7 @@ import signal
 import rich
 import typer
 
-from quizmaster import serialization, server
+from tablequiz import serialization, server
 
 app = typer.Typer()
 

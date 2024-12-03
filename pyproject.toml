@@ -1,5 +1,5 @@
 [project]
-name = "quizmaster"
+name = "tablequiz"
 version = "0.1.0"
 description = "Tool for running table quizes"
 readme = "README.md"
@@ -24,7 +24,7 @@ dev = [
 ]
 
 [project.scripts]
-quizmaster = "quizmaster.main:app"
+tablequiz = "tablequiz.main:app"
 
 [build-system]
 requires = ["hatchling"]

@@ -1,16 +1,16 @@
-project := "quizmaster"
+project := "tablequiz"
 quiz := "example_quiz.yaml"
 
 default: serve
 
 summary quiz=quiz:
-  quizmaster summary {{quiz}}
+  tablequiz summary {{quiz}}
 
 develop quiz=quiz:
-  watchfiles "quizmaster serve {{quiz}}" .
+  watchfiles "tablequiz serve {{quiz}}" .
 
 serve quiz=quiz:
-  quizmaster serve {{quiz}}
+  tablequiz serve {{quiz}}
 
 lint:
   ruff check

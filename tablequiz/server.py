@@ -8,9 +8,9 @@ from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-from quizmaster.quiz import Quiz
+from tablequiz.quiz import Quiz
 
-with importlib.resources.path("quizmaster", "templates") as templates_path:
+with importlib.resources.path("tablequiz", "templates") as templates_path:
     templates = Jinja2Templates(directory=templates_path)
 
 
@@ -55,7 +55,7 @@ routes: list[Route | Mount] = [
         "/rounds/{round:int}/answers", endpoint=quiz_round_answers, name="round_answers"
     ),
     Route("/rounds/{round:int}", endpoint=quiz_round, name="round"),
-    Mount("/static", StaticFiles(packages=["quizmaster"]), name="static"),
+    Mount("/static", StaticFiles(packages=["tablequiz"]), name="static"),
     Mount("/images", StaticFiles(directory="images"), name="images"),
 ]
 
