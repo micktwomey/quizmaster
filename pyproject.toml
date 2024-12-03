@@ -1,6 +1,5 @@
 [project]
 name = "tablequiz"
-version = "0.1.0"
 description = "Tool for running table quizes"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -14,9 +13,17 @@ dependencies = [
   "uvicorn[standard]>=0.32.1",
   "watchfiles>=1.0.0",
 ]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/micktwomey/tablequiz"
+Repository = "https://github.com/micktwomey/tablequiz.git"
+Changelog = "https://github.com/micktwomey/tablequiz/blob/main/CHANGELOG.md"
 
 [dependency-groups]
 dev = [
+    "changelog-manager>=1.4.0",
+    "hatch>=1.13.0",
     "mypy>=1.13.0",
     "pre-commit>=4.0.1",
     "ruff>=0.8.0",
@@ -33,3 +40,6 @@ build-backend = "hatchling.build"
 [tool.mypy]
 plugins = "pydantic.mypy"
 strict = true
+
+[tool.hatch.version]
+path = "tablequiz/__init__.py"

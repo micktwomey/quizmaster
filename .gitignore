@@ -16,3 +16,4 @@ devenv.local.nix
 .direnv
 
 .vscode
+.DS_Store

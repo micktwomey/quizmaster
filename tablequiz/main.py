@@ -8,6 +8,7 @@ import rich
 import typer
 
 from tablequiz import serialization, server
+from tablequiz import __version__
 
 app = typer.Typer()
 
@@ -37,7 +38,7 @@ def serve(input: Path, host: str = "127.0.0.1", port: int = 5000) -> None:
     asyncio.run(srv.serve())
 
 
-def print_summary(totals: collections.Counter) -> None:
+def print_summary(totals: collections.Counter[str]) -> None:
     rich.print(f"Questions: {totals['questions']}")
     rich.print(f"  Images: {totals['images']}")
     rich.print(f"  Multiple choice: {totals['multiple_choice']}")
@@ -63,11 +64,11 @@ def summary(input: Path) -> None:
     rich.print(quiz.title)
     rich.print(quiz.sub_title)
 
-    totals = collections.Counter()
+    totals: collections.Counter[str] = collections.Counter()
     for i, round in enumerate(quiz.rounds):
         rich.print(f"\nRound {i+1}: {round.title}")
         rich.print(round.sub_title)
-        round_totals = collections.Counter()
+        round_totals: collections.Counter[str] = collections.Counter()
         for question in round.questions:
             round_totals["questions"] += 1
             round_totals[question.type] += 1
@@ -85,6 +86,11 @@ def summary(input: Path) -> None:
     rich.print("\nQuiz totals:")
 
     print_summary(totals)
+
+
+@app.command()
+def version() -> None:
+    rich.print(__version__)
 
 
 if __name__ == "__main__":

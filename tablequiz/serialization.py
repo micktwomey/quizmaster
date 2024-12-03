@@ -103,9 +103,9 @@ class MultipleChoiceQuestion(BaseModel):
             (i, a) for (i, a) in enumerate(self.choices) if isinstance(a, Answer)
         ]
         assert len(answers) == 1
-        i, answer = answers[0]
+        i, pydantic_answer = answers[0]
         letter = string.ascii_lowercase[i]
-        answer = answer.to_dataclass()
+        answer = pydantic_answer.to_dataclass()
         answer.answer = f"{letter}. {answer.answer}"
         return quiz_dataclasses.MultipleChoiceQuestion(
             question=quiz_dataclasses.Question(question=self.question)
